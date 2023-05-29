@@ -18,6 +18,17 @@ body {
     width: 1.5rem;
 }
 
+.shop-now-button {
+    background: white;
+    color: black;
+    min-width: 260px;
+}
+
+/* .btn-white {
+    background: white;
+    color: black;
+} */
+
 .logo-font {
     text-transform: uppercase;
 }

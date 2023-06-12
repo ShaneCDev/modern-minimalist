@@ -22,7 +22,7 @@
                         <span class="p-2 mt-2 badge badge-white text-dark rounded-0 border border-dark">{{ c.friendly_name }}</span>
                     </a>
                 {% endfor %}
-                <hr class="w-50 mb-1">
+                <hr class="w-50 mb-1 mx-auto">
             </div>
         </div>
         <div class="row">
@@ -30,14 +30,14 @@
                 <div class="row mt-1 mb-2">
                     <div class="col-12 col-md-6 my-auto order-md-last d-flex justify-content-center justify-content-md-end">
                         <div class="sort-select-wrapper w-50">
-                            <select id="sort-selector" class="custom-select custom-select-sm rounded-0 border border-{% if current_sorting != 'None_None' %}info{% else %}black{% endif %}">
+                            <select id="sort-selector" class="form-select form-select-sm rounded-0 border border-primary{% if current_sorting != 'None_None' %}border-info{% else %}border-dark{% endif %}">
                                 <option value="reset" {% if current_sorting == 'None_None' %}selected{% endif %}>Sort by...</option>
-                                <option value="reset" {% if current_sorting == 'price_asc' %}selected{% endif %}>Price (low to high)</option>
-                                <option value="reset" {% if current_sorting == 'price_desc' %}selected{% endif %}>Price (high to low)</option>
-                                <option value="reset" {% if current_sorting == 'name_asc' %}selected{% endif %}>Name (A-Z)</option>
-                                <option value="reset" {% if current_sorting == 'name_desc' %}selected{% endif %}>Name (Z-A)</option>
-                                <option value="reset" {% if current_sorting == 'category_asc' %}selected{% endif %}>Category (A-Z)</option>
-                                <option value="reset" {% if current_sorting == 'category_desc' %}selected{% endif %}>Category (Z-A)</option>
+                                <option value="price_asc" {% if current_sorting == 'price_asc' %}selected{% endif %}>Price (low to high)</option>
+                                <option value="price_desc" {% if current_sorting == 'price_desc' %}selected{% endif %}>Price (high to low)</option>
+                                <option value="name_asc" {% if current_sorting == 'name_asc' %}selected{% endif %}>Name (A-Z)</option>
+                                <option value="name_desc" {% if current_sorting == 'name_desc' %}selected{% endif %}>Name (Z-A)</option>
+                                <option value="category_asc" {% if current_sorting == 'category_asc' %}selected{% endif %}>Category (A-Z)</option>
+                                <option value="category_desc" {% if current_sorting == 'category_desc' %}selected{% endif %}>Category (Z-A)</option>
                             </select>
                         </div>
                     </div>
@@ -63,23 +63,23 @@
                                         <img class="card-img-top img-fluid" src="{{ MEDIA_URL }}noimage.png" alt="{{ product.name }}">
                                     </a>
                                 {% endif %}
-                                <div class="card-body pb-0">
-                                    <p class="mb-0">{{ product.name }}</p>
+                                <div class="card-body pb-0 bg-dark">
+                                    <p class="mb-0 text-light">{{ product.name }}</p>
                                 </div>
-                                <div class="card-footer bg-white pt-0 border-0 text-left">
+                                <div class="card-footer bg-dark pt-0 border-0 text-left">
                                     <div class="row">
                                         <div class="col">
-                                            <p class="lead mb-0 text-left font-weight-bold">€{{ product.price }}</p>
+                                            <p class="lead mb-0 text-left font-weight-bold text-light">€{{ product.price }}</p>
                                             {% if product.category %}
                                             <p class="small mt-1 mb-0">
                                                 <a href="{% url 'products' %}?category={{ product.category.name }}" class="text-muted">
-                                                    <i class="fas fa-tag mr-1"></i>{{ product.category.friendly_name }}
+                                                    <i class="fas fa-tag mr-1"></i> <span class="text-light">{{ product.category.friendly_name }}</span>
                                                 </a>
                                             </p>
                                             {% endif %}
                                             {% if request.user.is_superuser %}
                                             <small class="ml-3">
-                                                <a href="#">Edit</a>
+                                                <a href="#">Edit</a> |
                                                 <a href="#" class="text-danger">Delete</a>
                                             </small>
                                             {% endif %}
@@ -123,31 +123,31 @@
 {% block postloadjs %}
     {{ block.super }}
     <script type="text/javascript">
-        $('.btt-link').click(function(e) {
-            window.scrollTo(0,0);
+        document.querySelectorAll('.btt-link').forEach(function(el) {
+            el.addEventListener('click', function(e) {
+                window.scrollTo(0,0);
+            });
         });
     </script>
 
     <script type="text/javascript">
-        $('#sort-selector').change(function(e) {
-            var selector = $(this);
-            var currUrl = new URL(window.location);
-    
-            var selectedVal = selector.val();
-            if(selectedVal != "reset") {
+        document.getElementById('sort-selector').addEventListener('change', function(e){
+            var selector = this;
+            var currUrl = new URL(window.location.href);
+
+            var selectedVal = selector.value;
+            if(selectedVal !== "reset") {
                 var sort = selectedVal.split("_")[0];
                 var direction = selectedVal.split("_")[1];
-    
+
                 currUrl.searchParams.set("sort", sort);
                 currUrl.searchParams.set("direction", direction);
-    
-                window.location.replace(currUrl);
             } else {
                 currUrl.searchParams.delete("sort");
                 currUrl.searchParams.delete("direction");
-    
-                window.location.replace(currUrl);
             }
+
+            window.location.replace(currUrl);
         });
     </script>
 {% endblock%}

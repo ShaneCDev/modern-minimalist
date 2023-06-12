@@ -23,7 +23,15 @@ body {
 }
 
 .overlay {
-    background: black;
+   height: 100%;
+   width: 100%;
+   top: 0;
+   left: 0;
+   position: fixed;
+   z-index: -1;
+   background: -moz-linear-gradient(top, #000 0%, #2D0007 100%);
+   background: -webkit-gradient(top, #000 0%, #2D0007 100%);
+   background: linear-gradient(to bottom, #000 0%, #2D0007 100%); 
 }
 
 /* .btn-white {

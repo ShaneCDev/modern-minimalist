@@ -16,7 +16,7 @@
    <div class="container-fluid">
     <div class="row">
         <div class="col-12 col-md-6 col-lg-4 offset-lg-2">
-            <div class="image-container my-5">
+            <div class="image-container my-5 h-75">
                 {% if product.image %}
                     <a href="{{ product.image.url }}" target="_blank">
                         <img src="{{ product.image.url }}" alt="{{ product.name }}" class="card-img-top img-fluid">
@@ -30,12 +30,12 @@
         </div>
         <div class="col-12 col-md-6 col-lg-4">
             <div class="product-details-container mb-5 mt-md-5">
-                <p class="mb-0">{{ product.name }}</p>
-                <p class="lead mb-0 text-left font-weight-bold">€{{ product.price }}</p>
+                <p class="mb-0 text-light">{{ product.name }}</p>
+                <p class="lead mb-0 text-left font-weight-bold text-light">€{{ product.price }}</p>
                 {% if product.category %}
                 <p class="small mt-1 mb-0">
                     <a href="{% url 'products' %}?category={{ product.category.name }}" class="text-muted">
-                        <i class="fas fa-tag mr-1"></i> {{ product.category.friendly_name }}
+                        <i class="fas fa-tag mr-1 text-light"></i> <span class="text-light"> {{ product.category.friendly_name }}</span>
                     </a>
                 </p>
                 {% endif %}
@@ -52,7 +52,7 @@
                         {% with product.has_sizes as s %}
                         {% if s %}
                             <div class="col-12">
-                                <p><strong>Size:</strong></p>
+                                <p><strong class="text-light">Size:</strong></p>
                                 <select name="product_size" id="id_product_size" class="form-control rounded-0 w-50">
                                     <option value="xs">XS</option>
                                     <option value="s">S</option>
@@ -63,13 +63,13 @@
                             </div>
                         {% endif %}
                         <div class="col-12">
-                            <p class="mt-3"><strong>Quantity:</strong></p>
+                            <p class="mt-3"><strong class="text-light">Quantity:</strong></p>
                             <div class="form-group w-50">
                                 <div class="input-group input-group-{{ product.id }}">
                                     <div class="input-group-prepend">
-                                        <button class="decrement-qty btn btn-black rounded-0 decrement-qty_{{ product.id }}" data-item_id="{{ product.id }}">
+                                        <button class="decrement-qty btn btn-dark rounded-0 decrement-qty_{{ product.id }}" data-item_id="{{ product.id }}">
                                             <span class="icon">
-                                                <i class="fas fa-minus"></i>
+                                                <i class="fas fa-minus text-light"></i>
                                             </span>
                                         </button>
                                     </div>
@@ -77,10 +77,10 @@
                                         name="quantity" value="1" min="1" max="99"
                                         data-item_id="{{ product.id }}">
                                     <div class="input-group-append">
-                                        <button class="increment-qty btn btn-black rounded-0 increment-qty_{{ product.id }}"
+                                        <button class="increment-qty btn btn-dark rounded-0 increment-qty_{{ product.id }}"
                                             data-item_id="{{ product.id }}">
                                             <span class="icon">
-                                                <i class="fas fa-plus"></i>
+                                                <i class="fas fa-plus text-light"></i>
                                             </span>
                                         </button>
                                     </div>
@@ -89,13 +89,13 @@
                         </div>
 
                         <div class="col{% if s %}-12 mt-2{% endif %}">
-                            <a href="{% url 'products' %}" class="btn btn-outline-black rounded-0 mt-5">
+                            <a href="{% url 'products' %}" class="btn btn-outline-dark rounded-0 mt-5">
                                 <span class="icon">
-                                    <i class="fas fa-chevron-left"></i>
+                                    <i class="fas fa-chevron-left text-light"></i>
                                 </span>
-                                <span class="text-uppercase">Keep Shopping</span>
+                                <span class="text-uppercase text-light">Keep Shopping</span>
                             </a>
-                            <input type="submit" class="btn btn-black rounded-0 text-uppercase mt-5" value="Add to Bag">
+                            <input type="submit" class="btn btn-dark rounded-0 text-light text-uppercase mt-5" value="Add to Bag">
                         </div>
                         <input type="hidden" name="redirect_url" value="{{ request.path }}">
                         {% endwith %}

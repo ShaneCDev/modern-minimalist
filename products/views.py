@@ -1,8 +1,10 @@
 from django.shortcuts import render, get_object_or_404, redirect, reverse
 from .models import Product, Category
+from django.contrib.auth.decorators import login_required
 from django.db.models.functions import Lower
 from django.db.models import Q
 from django.contrib import messages
+from .forms import ProductForm
 
 
 def all_products(request):
@@ -64,3 +66,33 @@ def product_detail(request, slug):
     }
 
     return render(request, 'products/product_detail.html', context)
+
+
+@login_required
+def edit_product(request, slug, product_id):
+    """Edit existing products"""
+    if not request.user.is_superuser:
+        # add messages later
+        return redirect(reverse('home'))
+    
+    product = get_object_or_404(Product, pk=product_id)
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES, instance=product)
+        if form.is_valid():
+            form.save()
+            # add messages later
+            return redirect(reverse('product_detail', args=[slug]))
+        else:
+            print("add messages later")
+            # add messages later
+    else:
+        form = ProductForm(instance=product)
+        # add messages later
+    
+    template = 'products/edit_product.html'
+    context = {
+        'form': form,
+        'product': product,
+    }
+
+    return render(request, template, context)

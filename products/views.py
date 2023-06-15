@@ -69,6 +69,33 @@ def product_detail(request, slug):
 
 
 @login_required
+def add_product(request):
+    """Add a product to the store"""
+    if not request.user.is_superuser:
+        # add messages
+        return redirect(reverse('home'))
+
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES)
+        if form.is_valid():
+            product = form.save()
+            # add messages
+            return redirect(reverse('product_detail'), args=[product.slug])
+        else:
+            # add messages
+            print('add messages')
+    else:
+        form = ProductForm()
+
+    template = 'products/add_product.html'
+    context = {
+        'form': form,
+    }
+
+    return render(request, template, context)
+
+
+@login_required
 def edit_product(request, slug, product_id):
     """Edit existing products"""
     if not request.user.is_superuser:
@@ -99,7 +126,7 @@ def edit_product(request, slug, product_id):
 
 
 @login_required
-def delete_product(request, slug, product_id):
+def delete_product(request, product_id):
     """Delete products from the store"""
     if not request.user.is_superuser:
         # add messages

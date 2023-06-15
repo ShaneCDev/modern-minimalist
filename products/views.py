@@ -96,3 +96,16 @@ def edit_product(request, slug, product_id):
     }
 
     return render(request, template, context)
+
+
+@login_required
+def delete_product(request, slug, product_id):
+    """Delete products from the store"""
+    if not request.user.is_superuser:
+        # add messages
+        return redirect(reverse('home'))
+    
+    product = get_object_or_404(Product, pk=product_id)
+    product.delete()
+    # add messages
+    return redirect(reverse('products'))
